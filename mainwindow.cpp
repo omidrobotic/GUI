@@ -142,6 +142,9 @@ MainWindow::MainWindow(QWidget *parent)
     findDataBaseId("config","NAME",0,&configDataBase);
     configLabelName[0] = new QLabel("Name");
     configHlayout->addWidget(configLabelName[0],0,1,1,1);
+    configLabelValue[0] = new QLabel("Value");
+    configHlayout->addWidget(configLabelValue[0],0,2,1,1);
+
     int i=1;
     while (true) {
 
@@ -309,64 +312,125 @@ void MainWindow::on_saveButton_clicked()
 
 void MainWindow::on_refreshButton_clicked()
 {
-//    int i=1;
-//    while (true) {
+    int i=1;
+    while (true) {
+
+        if(sizeConfig>i)
+        {
+            findDataBaseId("config","TYPE",i,&configDataBase);
+            if(seter.value=="Line Edit")
+            {
+                findDataBaseId("config","EQULVALUE",i,&configDataBase);
+                configLabelValue[i]->setText(QString::fromStdString(seter.value));
+
+                configLineEdit[i]->setText(QString::fromStdString(seter.value));
+            }
+            else if(seter.value=="Combo Box")
+            {
+                findDataBaseId("config","EQULVALUE",i,&configDataBase);
+                configLabelValue[i]->setText(QString::fromStdString(seter.value));
 
 
-//        findDataBaseId("config","TYPE",i,&configDataBase);
-//        if(seter.value=="Line Edit")
-//        {
-//            findDataBaseId("config","EQULVALUE",i,&configDataBase);
-//            configLabelValue[i] = new QLabel(QString::fromStdString(seter.value));
-//            configHlayout->addWidget(configLabelValue[i],i,2,1,1);
+                QString dataValue=QString::fromStdString(seter.value);
+                findDataBaseId("config","EQULSTRING",i,&configDataBase);
+                QString data = QString::fromStdString(seter.value);
+                list[i] = data.split(",");
+                configComboBox[i]=new QComboBox;
 
-//            configLineEdit[i] = new QLineEdit;
-//            configHlayout->addWidget(configLineEdit[i],i,3,1,1);
-//        }
-//        else if(seter.value=="Combo Box")
-//        {
-//            findDataBaseId("config","EQULVALUE",i,&configDataBase);
-//            configLabelValue[i] = new QLabel(QString::fromStdString(seter.value));
-//            configHlayout->addWidget(configLabelValue[i],i,2,1,1);
-
-//            findDataBaseId("config","EQULSTRING",i,&configDataBase);
-//            QString data = QString::fromStdString(seter.value);
-//            list[i] = data.split(",");
-//            configComboBox[i]=new QComboBox;
-
-//            foreach (QString itm, list[i]) {
-//               std::cout<<itm.toStdString();
-//               configComboBox[i]->addItem(itm);
-//            }
-//            configHlayout->addWidget(configComboBox[i],i,3,1,1);
-//        }
-//        else if(seter.value=="Radio Button")
-//        {
-
-//        }
-//        else if(seter.value=="Check Box")
-//        {
-
-//        }
-//        else {
-//            sizeConfig=i;
-//            break;
-//        }
-//        findDataBaseId("config","ID",i,&configDataBase);
-//        configLabelId[i] = new QLabel(QString::fromStdString(seter.value));
-//        configHlayout->addWidget(configLabelId[i],i,0,1,1);
-//        findDataBaseId("config","NAME",i,&configDataBase);
-//        configLabelName[i] = new QLabel(QString::fromStdString(seter.value));
-//        configHlayout->addWidget(configLabelName[i],i,1,1,1);
+                configComboBox[i]->addItem(dataValue);
+                foreach (QString itm, list[i]) {
+                    if(itm!=dataValue)
+                        configComboBox[i]->addItem(itm);
+                }
 
 
-//        if(seter.value=="" || i>50)
-//            break;
-//        i++;
-//    }
-    configLabelName[1]->setText(QString("aaaa"));
-    configLabelValue[13] = new QLabel(QString::fromStdString(seter.value));
-                configHlayout->addWidget(configLabelValue[13],13,2,1,1);
+            }
+            else if(seter.value=="Radio Button")
+            {
+
+            }
+            else if(seter.value=="Check Box")
+            {
+
+            }
+            else {
+                sizeConfig=i;
+                break;
+            }
+            findDataBaseId("config","ID",i,&configDataBase);
+            configLabelId[i]->setText(QString::fromStdString(seter.value));
+            findDataBaseId("config","NAME",i,&configDataBase);
+            configLabelName[i]->setText(QString::fromStdString(seter.value));
+
+
+            if(seter.value=="" || i>50)
+                break;
+            i++;
+        }
+        else
+        {
+            findDataBaseId("config","TYPE",i,&configDataBase);
+            if(seter.value=="Line Edit")
+            {
+                findDataBaseId("config","EQULVALUE",i,&configDataBase);
+                configLabelValue[i] = new QLabel(QString::fromStdString(seter.value));
+                configHlayout->addWidget(configLabelValue[i],i,2,1,1);
+
+                configLineEdit[i] = new QLineEdit(QString::fromStdString(seter.value));
+                configHlayout->addWidget(configLineEdit[i],i,3,1,1);
+            }
+            else if(seter.value=="Combo Box")
+            {
+                findDataBaseId("config","EQULVALUE",i,&configDataBase);
+                configLabelValue[i] = new QLabel(QString::fromStdString(seter.value));
+                configHlayout->addWidget(configLabelValue[i],i,2,1,1);
+
+
+                QString dataValue=QString::fromStdString(seter.value);
+                findDataBaseId("config","EQULSTRING",i,&configDataBase);
+                QString data = QString::fromStdString(seter.value);
+                list[i] = data.split(",");
+                configComboBox[i]=new QComboBox;
+
+                configComboBox[i]->addItem(dataValue);
+                foreach (QString itm, list[i]) {
+                    if(itm!=dataValue)
+                   configComboBox[i]->addItem(itm);
+                }
+
+
+                configHlayout->addWidget(configComboBox[i],i,3,1,1);
+            }
+            else if(seter.value=="Radio Button")
+            {
+
+            }
+            else if(seter.value=="Check Box")
+            {
+
+            }
+            else {
+    //            configButton = new QPushButton("Push");
+    //            configHlayout->addWidget(configButton,i,3,1,1);
+                sizeConfig=i;
+                break;
+            }
+            findDataBaseId("config","ID",i,&configDataBase);
+            configLabelId[i] = new QLabel(QString::fromStdString(seter.value));
+            configHlayout->addWidget(configLabelId[i],i,0,1,1);
+            findDataBaseId("config","NAME",i,&configDataBase);
+            configLabelName[i] = new QLabel(QString::fromStdString(seter.value));
+            configHlayout->addWidget(configLabelName[i],i,1,1,1);
+
+
+            if(seter.value=="" || i>50)
+                break;
+            i++;
+        }
+    }
+//    configLabelName[1]->setText(QString("aaaa"));
+//    configLabelValue[13] = new QLabel(QString::fromStdString(seter.value));
+//                configHlayout->addWidget(configLabelValue[13],13,2,1,1);
 
 
 }
